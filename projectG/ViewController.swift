@@ -53,9 +53,28 @@ class ViewController: UIViewController {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 4
         $0.layer.masksToBounds = true
+        $0.setTitle("말하기 시작", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
     }
     
+    let translatedTextView = UITextView().then {
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.green.cgColor
+        $0.layer.cornerRadius = 16
+        $0.layer.masksToBounds = true
+        $0.isEditable = false
+    }
     
+    let speechScriptTextView = UITextView().then {
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.white.cgColor
+        $0.layer.cornerRadius = 16
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .clear
+        $0.isEditable = false
+        $0.contentInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+    }
+
     private let speechRecognizer = SFSpeechRecognizer(locale: .init(identifier: "ko-KR"))
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest? // 음성인식 요청을 처리
     private var recognitionTask: SFSpeechRecognitionTask? // 음성인식 요청 작업
@@ -79,11 +98,11 @@ class ViewController: UIViewController {
     
     private func addView() {
         view.addSubview(mainView)
-        [engineHow, recordView, recordOpenBtn].forEach {
+        [engineHow, translatedTextView, recordView, recordOpenBtn].forEach {
             view.addSubview($0)
         }
         
-        [recordBtn].forEach {
+        [recordBtn, speechScriptTextView].forEach {
             recordView.addSubview($0)
         }
         
@@ -103,6 +122,13 @@ class ViewController: UIViewController {
             $0.height.equalTo(50)
         }
         
+        translatedTextView.snp.remakeConstraints {
+            $0.leading.equalTo(view.snp.leadingMargin)
+            $0.trailing.equalTo(view.snp.trailingMargin)
+            $0.top.equalTo(engineHow.snp.bottomMargin)
+            $0.bottom.equalTo(view.snp.bottomMargin)
+        }
+        
         recordOpenBtn.snp.remakeConstraints {
             $0.width.height.equalTo(36)
             $0.trailing.equalTo(view.snp.trailingMargin)
@@ -112,6 +138,18 @@ class ViewController: UIViewController {
             $0.leading.trailing.top.bottom.equalTo(recordOpenBtn)
         }
         
+        recordBtn.snp.remakeConstraints {
+            $0.bottom.equalToSuperview().offset(-16)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(150)
+        }
+        
+        speechScriptTextView.snp.remakeConstraints {
+            $0.top.equalTo(recordView.snp.topMargin)
+            $0.leading.equalTo(recordView.snp.leadingMargin)
+            $0.trailing.equalTo(recordView.snp.trailingMargin)
+            $0.bottom.equalTo(recordBtn.snp.top).offset(-8)
+        }
         
     }
     
@@ -120,6 +158,11 @@ class ViewController: UIViewController {
         UserDefaults.standard.set(engine, forKey: "whatEngine")
         UserDefaults.standard.synchronize()
         print(engine)
+        if engine == 0 { // naver
+            
+        } else if engine == 1 { // google
+            
+        }
     }
     
     @objc func openRecording() {
@@ -130,8 +173,8 @@ class ViewController: UIViewController {
         }
         self.recordView.snp.remakeConstraints {
             if self.recordOpenBtn.isSelected {
-                $0.leading.equalTo(self.mainView.snp.leadingMargin)
-                $0.trailing.equalTo(self.mainView.snp.trailingMargin)
+                $0.leading.equalTo(self.view.snp.leadingMargin)
+                $0.trailing.equalTo(self.view.snp.trailingMargin)
                 $0.top.equalTo(self.mainView.snp.topMargin).offset(400)
                 $0.bottom.equalTo(self.recordOpenBtn.snp.bottom)
             } else {
@@ -160,6 +203,7 @@ class ViewController: UIViewController {
             guard let user = user else { return }
 //            UserDefaults.standard.set(user, forKey: "GIDUser")
             user.authentication.do { authen, error in
+                UserDefaults.standard.set(authen?.accessToken, forKey: "user_AccessToken")
 //                self.gtv3(token: authen?.accessToken)
                 
             }
@@ -172,10 +216,9 @@ class ViewController: UIViewController {
             audioEngine.stop()
             recognitionRequest?.endAudio()
             recordBtn.isEnabled = false
-            recordBtn.setTitle("말해라", for: .normal)
+            
         } else {
             startRecording()
-            recordBtn.setTitle("말하다 멈춰!", for: .normal)
         }
     }
     
@@ -196,6 +239,56 @@ extension ViewController: SFSpeechRecognizerDelegate {
         // recognitionRequest 인스턴스화. Apple 서버에 오디오 데이터 전달하는데 사용
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         
+        // AudioEngine(장치)에 녹음 할 오디오 입력이 있는지 확인, 없으면 치명적 에러 나옴
+        // -> 오디오 엔진은 inputNode에 처음 액세스할 때 싱글톤을 생성해서 nil일수가 없으다...
+        let inputNode = audioEngine.inputNode
+        // recognitionRequest 객체가 인스턴스화 되고 nil이 아닌지 확인
+        guard let recognitionRequest = recognitionRequest else {
+            fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
+        }
+        
+        // 사용자의 음성인식 - 부분적인 결과 보고하도록 프로퍼티 설정
+        recognitionRequest.shouldReportPartialResults = true
+        
+        // 인식을 시작하려면 speechRecognizer의 recognitionTask 메소드를 호출해야 한다.
+        // 요청에 따라 음성발화를 인식. 부분결과보고shouldReportPartialResults가 true이면 Result 핸들러가 호출
+        // 부분적인 결과를 반복하고 마지막에 최종 결과 or 오류 반환
+        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
+            // 인식이 최종인지 확인 bool
+            var isFinal = false
+            // 결과가 nil이 아닌경우 결과의 최상의 텍스트로 설정, 최종결과이면 isFinal 업데이트
+            if result != nil {
+                print(result!.bestTranscription.formattedString)
+                self.speechScriptTextView.text = result!.bestTranscription.formattedString
+                isFinal = result!.isFinal
+            }
+            
+            if error != nil || isFinal {
+                self.audioEngine.stop()
+                inputNode.removeTap(onBus: 0)
+                self.recognitionRequest = nil
+                self.recognitionTask = nil
+                self.recordBtn.isEnabled = true
+                self.recordBtn.setTitle("말하기 시작", for: .normal)
+            }
+        })
+        // recognitionRequest에 오디오 입력을 추가.
+        // 인식 작업을 시작한 후에는 오디오 입력을 추가해도 괜찮습니다.
+        // 오디오 프레임 워크는 오디오 입력이 추가되는 즉시 인식을 시작합니다.
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, when in
+            self.recognitionRequest?.append(buffer)
+        }
+        
+        // 아직 음성인식 안끝났을 수도
+        audioEngine.prepare()
+        do {
+            try audioEngine.start()
+        } catch {
+            print("audioEngine couldn't start because of an \(error.localizedDescription)")
+        }
+        
+        recordBtn.setTitle("말 멈추기", for: .normal)
     }
     
     func setAudioSession() {
