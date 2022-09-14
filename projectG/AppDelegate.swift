@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if launchOptions?[.sourceApplication] as? String == "com.apple.SafariViewService" {
             
         }
-        SwiftGoogleTranslate.shared.start(with: "AIzaSyCsdsJOo_CqfFIWWEZqqT0uaIxL8oqAzEE")
+        SwiftGoogleTranslate.shared.start(with: "API_KEY")
         
         GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
             if error != nil || user == nil {
