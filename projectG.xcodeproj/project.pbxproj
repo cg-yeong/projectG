@@ -606,6 +606,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = projectG/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Yeong_ProjectG Speech Function";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Yeong_ProjectG Speech Function";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -637,6 +638,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = projectG/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Yeong_ProjectG Speech Function";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Yeong_ProjectG Speech Function";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
