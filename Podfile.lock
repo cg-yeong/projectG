@@ -17,6 +17,12 @@ PODS:
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.2)
   - OAuthSwift (2.2.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
   - SnapKit (5.6.0)
   - SwiftyJSON (5.0.1)
   - Then (3.0.0)
@@ -27,6 +33,8 @@ DEPENDENCIES:
   - GoogleSignIn
   - GoogleSignInSwiftSupport
   - OAuthSwift (~> 2.2.0)
+  - RxCocoa
+  - RxSwift
   - SnapKit
   - SwiftyJSON
   - Then
@@ -40,6 +48,9 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - OAuthSwift
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - SnapKit
     - SwiftyJSON
     - Then
@@ -52,10 +63,13 @@ SPEC CHECKSUMS:
   GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   OAuthSwift: 75efbb5bd9a4b2b71a37bd7e986bf3f55ddd54c6
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: 7df52bba2f23ff9b1cc9c2e9992af7cf17b2b7d0
+PODFILE CHECKSUM: 8372a1c2ca80e9e02a76388cc50374f44dc9bb6f
 
 COCOAPODS: 1.11.2
