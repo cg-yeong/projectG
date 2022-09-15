@@ -305,11 +305,6 @@ extension ViewController: SFSpeechRecognizerDelegate {
         recordBtn.setTitle("말 멈추기", for: .normal)
     }
     
-    
-    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-        print(speechRecognizer, available)
-    }
-    
     func setAudioSession() {
         let audioSession = AVAudioSession.sharedInstance()
         do {
