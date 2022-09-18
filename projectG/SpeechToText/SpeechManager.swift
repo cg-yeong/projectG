@@ -13,18 +13,30 @@ class SpeechManager: NSObject { // Apple Speech - STT
     
     weak var sttModel: STTModel!
     
+    // Apple Speech
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko-KR"))
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
-    
     private var inputNode: AVAudioInputNode?
-    
+
     init(_ model: STTModel) {
         super.init()
         self.sttModel = model
         speechRecognizer?.delegate = self
         
+        prepare()
+    }
+    
+    deinit {
+        print("SpeechManager Deinit")
+    }
+    
+}
+
+extension SpeechManager: SFSpeechRecognizerDelegate {
+    
+    func prepare() {
         // set AudioSession
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -36,10 +48,6 @@ class SpeechManager: NSObject { // Apple Speech - STT
         inputNode = audioEngine.inputNode
     }
     
-    deinit {
-        print("SpeechManager Deinit")
-    }
-    
     func speechAction() {
         if audioEngine.isRunning {
             audioEngine.stop()
@@ -49,10 +57,6 @@ class SpeechManager: NSObject { // Apple Speech - STT
             startRecording()
         }
     }
-    
-}
-
-extension SpeechManager: SFSpeechRecognizerDelegate {
     
     func startRecording() {
         

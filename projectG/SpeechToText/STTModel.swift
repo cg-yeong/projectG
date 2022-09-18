@@ -12,5 +12,6 @@ import RxCocoa
 class STTModel {
     
     var speechScript: BehaviorRelay<String> = .init(value: "")
+    var translatedText: BehaviorRelay<String> = .init(value: "")
     var recordBtnTitle: BehaviorRelay<String> = .init(value: "말하기 시작")
 }

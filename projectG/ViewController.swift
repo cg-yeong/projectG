@@ -79,11 +79,6 @@ class ViewController: UIViewController {
         $0.isEditable = false
         $0.contentInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
     }
-
-    private let speechRecognizer = SFSpeechRecognizer(locale: .init(identifier: "ko-KR"))
-    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest? // 음성인식 요청을 처리
-    private var recognitionTask: SFSpeechRecognitionTask? // 음성인식 요청 작업
-    private let audioEngine = AVAudioEngine()
     
     private let viewModel = STTViewModel()
     private let bag = DisposeBag()
@@ -91,8 +86,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
-//        speechRecognizer?.delegate = self
-        
         previousGIDSign()
         SFSpeechRecognizer.requestAuthorization { status in
             switch status {
@@ -132,8 +125,6 @@ class ViewController: UIViewController {
         
         bindViewModel()
         engineHow.addTarget(self, action: #selector(didChangeEngine(seg:)), for: .valueChanged)
-//        recordOpenBtn.addTarget(self, action: #selector(openRecording), for: .touchUpInside)
-//        recordBtn.addTarget(self, action: #selector(speechToText), for: .touchUpInside)
     }
     
     private func setConstraint() {
@@ -232,6 +223,13 @@ class ViewController: UIViewController {
                 self.recordBtn.setTitle(str, for: .normal)
             }
             .disposed(by: bag)
+        
+        viewModel.translatedText
+            .drive { [weak self] text in
+                guard let self = self else { return }
+                self.translatedTextView.text = text
+            }
+            .disposed(by: bag)
     }
     
     @objc func didChangeEngine(seg: UISegmentedControl) {
@@ -245,30 +243,6 @@ class ViewController: UIViewController {
             authori()
         }
     }
-    
-//    @objc func openRecording() {
-//        // UI
-//        recordOpenBtn.isSelected.toggle()
-//        if recordOpenBtn.isSelected {
-//            recordView.isHidden = false
-//        }
-//        self.recordView.snp.remakeConstraints {
-//            if self.recordOpenBtn.isSelected {
-//                $0.leading.equalTo(self.view.snp.leadingMargin)
-//                $0.trailing.equalTo(self.view.snp.trailingMargin)
-//                $0.top.equalTo(self.mainView.snp.topMargin).offset(400)
-//                $0.bottom.equalTo(self.recordOpenBtn.snp.bottom)
-//            } else {
-//                $0.leading.trailing.top.bottom.equalTo(self.recordOpenBtn)
-//            }
-//        }
-//
-//        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseInOut) {
-//            self.view.layoutIfNeeded()
-//        } completion: { _ in
-//            self.recordView.isHidden = !self.recordOpenBtn.isSelected
-//        }
-//    }
     
     @objc func sendAction() {
         Papago.shared.translator(text: "korean") { text in
@@ -294,103 +268,7 @@ class ViewController: UIViewController {
         
     }
     
-//    @objc func speechToText() {
-//        if audioEngine.isRunning {
-//            audioEngine.stop()
-//            recognitionRequest?.endAudio()
-//            recordBtn.isEnabled = false
-//
-//        } else {
-//            startRecording()
-//        }
-//    }
-    
 }
-
-//extension ViewController: SFSpeechRecognizerDelegate {
-//    func startRecording() {
-//        // 인식 작업이 실행중인지 먼저 확인하고 작업중이면 작업과 인식을 취소
-//        if recognitionTask != nil {
-//            /// kAFAssistantErrorDomain code=203 : SFSpeechRecognitionTask 를 완료하거나 취소할 때 결과를 감지 할 수 없는 경우
-////            recognitionTask?.cancel()
-//            recognitionTask?.finish()
-//            recognitionTask = nil
-//        }
-//
-//        // 오디오 녹음을 준비할 AVAudioSession을 준비, 세션의 범주를 녹음, 측정모드로 설정하고 활성화.
-//        // 예외 체크
-//        setAudioSession()
-//
-//        // recognitionRequest 인스턴스화. Apple 서버에 오디오 데이터 전달하는데 사용
-//        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-//
-//        // AudioEngine(장치)에 녹음 할 오디오 입력이 있는지 확인, 없으면 치명적 에러 나옴
-//        // -> 오디오 엔진은 inputNode에 처음 액세스할 때 싱글톤을 생성해서 nil일수가 없으다...
-//        let inputNode = audioEngine.inputNode
-//        // recognitionRequest 객체가 인스턴스화 되고 nil이 아닌지 확인
-//        guard let recognitionRequest = recognitionRequest else {
-//            fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
-//        }
-//
-//        // 사용자의 음성인식 - 부분적인 결과 보고하도록 프로퍼티 설정
-//        recognitionRequest.shouldReportPartialResults = true
-//
-//        // 인식을 시작하려면 speechRecognizer의 recognitionTask 메소드를 호출해야 한다.
-//        // 요청에 따라 음성발화를 인식. 부분결과보고shouldReportPartialResults가 true이면 Result 핸들러가 호출
-//        // 부분적인 결과를 반복하고 마지막에 최종 결과 or 오류 반환
-//        let gidToken = UserDefaults.standard.string(forKey: "userGID_AccessToken") ?? "DEFAULT"
-//        print(gidToken)
-//        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
-//            // 인식이 최종인지 확인 bool
-//            var isFinal = false
-//            // 결과가 nil이 아닌경우 결과의 최상의 텍스트로 설정, 최종결과이면 isFinal 업데이트
-//            if result != nil {
-//                print(result!.bestTranscription.formattedString)
-//                self.speechScriptTextView.text = result!.bestTranscription.formattedString
-//                self.gtv3(token: gidToken, text: result!.bestTranscription.formattedString)
-//                isFinal = result!.isFinal
-//            }
-//
-//            if error != nil || isFinal {
-//                self.audioEngine.stop()
-//                inputNode.removeTap(onBus: 0)
-//                self.recognitionRequest = nil
-//                self.recognitionTask = nil
-//                self.recordBtn.isEnabled = true
-//                self.recordBtn.setTitle("말하기 시작", for: .normal)
-//            }
-//        })
-//        // recognitionRequest에 오디오 입력을 추가.
-//        // 인식 작업을 시작한 후에는 오디오 입력을 추가해도 괜찮습니다.
-//        // 오디오 프레임 워크는 오디오 입력이 추가되는 즉시 인식을 시작합니다.
-//        let recordingFormat = inputNode.outputFormat(forBus: 0)
-//        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, when in
-//            self.recognitionRequest?.append(buffer)
-//        }
-//
-//        // 아직 음성인식 안끝났을 수도
-//        audioEngine.prepare()
-//        do {
-//            try audioEngine.start()
-//        } catch {
-//            print("audioEngine couldn't start because of an \(error.localizedDescription)")
-//        }
-//
-//        recordBtn.setTitle("말 멈추기", for: .normal)
-//    }
-//
-//    func setAudioSession() {
-//        let audioSession = AVAudioSession.sharedInstance()
-//        do {
-//            try audioSession.setCategory(.record)
-//            try audioSession.setMode(.measurement)
-//            try audioSession.setActive(true, options: .notifyOthersOnDeactivation) // 앱이 인터럽트가 끝나는 것을 알리고 재생을 재개할 것을 알림.
-//        } catch {
-//            print("오디오 세션 프로퍼티가 에러로 제대로 세팅되지 못함")
-//        }
-//
-//    }
-//}
 
 extension ViewController {
     
@@ -408,28 +286,5 @@ extension ViewController {
         }
     }
     
-    func gtv3(token: String? = nil, text: String? = nil) {
-        let text = text ?? "안녕하세요 오늘 출근했어요"
-        let param: [String : Any] = [
-            "contents" : text,
-            "targetLanguageCode" : "en",
-            "mimeType" : "text/plain"
-        ]
-        let header_gt: HTTPHeaders = [
-            "Content-Type" : "application/x-www-form-urlencoded; charset=utf-8",
-            "Authorization" : "Bearer \(token ?? "Default_Token")"
-        ]
-        
-        AF.request("https://translate.googleapis.com/v3/projects/780002601256:translateText", method: .post, parameters: param, headers: header_gt).responseJSON { response in
-            switch response.result {
-            case .success(let data):
-                let jsonData = JSON(data)
-                print(jsonData)
-                self.translatedTextView.text = jsonData["translations"][0]["translatedText"].stringValue
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
+    
 }
