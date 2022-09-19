@@ -10,13 +10,10 @@ PODS:
     - AppAuth (~> 1.5)
     - GTMAppAuth (~> 1.3)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleSignInSwiftSupport (6.2.3):
-    - GoogleSignIn (~> 6.2)
   - GTMAppAuth (1.3.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.2)
-  - OAuthSwift (2.2.0)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -29,10 +26,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
-  - AppAuth
   - GoogleSignIn
-  - GoogleSignInSwiftSupport
-  - OAuthSwift (~> 2.2.0)
   - RxCocoa
   - RxSwift
   - SnapKit
@@ -44,10 +38,8 @@ SPEC REPOS:
     - Alamofire
     - AppAuth
     - GoogleSignIn
-    - GoogleSignInSwiftSupport
     - GTMAppAuth
     - GTMSessionFetcher
-    - OAuthSwift
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -59,10 +51,8 @@ SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   GoogleSignIn: 3c68388ac221f379676e8f1cb115df3aaf73b93f
-  GoogleSignInSwiftSupport: f76e00ac6ba4653af48372c765d45f327219b3ff
   GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  OAuthSwift: 75efbb5bd9a4b2b71a37bd7e986bf3f55ddd54c6
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
@@ -70,6 +60,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: 8372a1c2ca80e9e02a76388cc50374f44dc9bb6f
+PODFILE CHECKSUM: 01aa9e1c7d4487ef4b928e9a7301819e63f57bae
 
 COCOAPODS: 1.11.2

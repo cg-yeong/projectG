@@ -8,7 +8,6 @@
 import UIKit
 import GoogleSignIn
 import AppAuth
-import OAuthSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -69,10 +68,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
         
-        if url.host == "oauth-callback" {
-            OAuthSwift.handle(url: url)
-            return true
-        }
+//        if url.host == "oauth-callback" {
+//            OAuthSwift.handle(url: url)
+//            return true
+//        }
 
         if let authorizationFlow = currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
             currentAuthorizationFlow = nil

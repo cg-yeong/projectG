@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import OAuthSwift
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -50,10 +49,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        guard let url = URLContexts.first?.url else { return }
-        if url.host == "oauth-callback" {
-            OAuthSwift.handle(url: url)
-        }
+//        guard let url = URLContexts.first?.url else { return }
+//        if url.host == "oauth-callback" {
+//            OAuthSwift.handle(url: url)
+//        }
     }
 }
 
