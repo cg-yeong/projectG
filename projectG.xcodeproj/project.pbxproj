@@ -25,6 +25,10 @@
 		6679188628D2EF08002495CE /* STTViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6679188528D2EF08002495CE /* STTViewModel.swift */; };
 		6679188828D2EF2A002495CE /* STTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6679188728D2EF2A002495CE /* STTModel.swift */; };
 		667918A028D4323F002495CE /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6679189F28D4323F002495CE /* AudioController.swift */; };
+		667918C928D7F0DE002495CE /* MyMarkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667918C828D7F0DE002495CE /* MyMarkers.swift */; };
+		667918CB28D7F6E4002495CE /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667918CA28D7F6E4002495CE /* City.swift */; };
+		667918CD28D83E11002495CE /* MockCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667918CC28D83E11002495CE /* MockCollections.swift */; };
+		66CAD5CA28D9919300EC7512 /* OIDAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CAD5C928D9919300EC7512 /* OIDAuth.swift */; };
 		CF4512614696ACD21E425D1D /* Pods_projectG_projectGUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61E819851AE7CC25188845C7 /* Pods_projectG_projectGUITests.framework */; };
 		D83F8A0C6E5C984AE6C86B43 /* Pods_projectG.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B7D0A905929E48D2855B56 /* Pods_projectG.framework */; };
 		DF0B488902788C849610D8E8 /* Pods_projectGTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255EFC71A9F796C8D20B3391 /* Pods_projectGTests.framework */; };
@@ -75,6 +79,10 @@
 		6679188528D2EF08002495CE /* STTViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTViewModel.swift; sourceTree = "<group>"; };
 		6679188728D2EF2A002495CE /* STTModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTModel.swift; sourceTree = "<group>"; };
 		6679189F28D4323F002495CE /* AudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
+		667918C828D7F0DE002495CE /* MyMarkers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMarkers.swift; sourceTree = "<group>"; };
+		667918CA28D7F6E4002495CE /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		667918CC28D83E11002495CE /* MockCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCollections.swift; sourceTree = "<group>"; };
+		66CAD5C928D9919300EC7512 /* OIDAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OIDAuth.swift; sourceTree = "<group>"; };
 		8D8384F4066E7C0142C57963 /* Pods-projectG.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectG.debug.xcconfig"; path = "Target Support Files/Pods-projectG/Pods-projectG.debug.xcconfig"; sourceTree = "<group>"; };
 		B094EF3DBC5D89910A2D184F /* Pods-projectGTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectGTests.release.xcconfig"; path = "Target Support Files/Pods-projectGTests/Pods-projectGTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2AD42EB13523BAF0921C67A /* Pods-projectGTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectGTests.debug.xcconfig"; path = "Target Support Files/Pods-projectGTests/Pods-projectGTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -147,10 +155,12 @@
 		662004CC28C09ED6006300AE /* projectG */ = {
 			isa = PBXGroup;
 			children = (
+				667918C728D7F0B1002495CE /* Mines */,
 				662004CD28C09ED6006300AE /* AppDelegate.swift */,
 				6620050328C581E3006300AE /* AppAuth.swift */,
 				662004CF28C09ED6006300AE /* SceneDelegate.swift */,
 				662004D128C09ED6006300AE /* ViewController.swift */,
+				66CAD5C928D9919300EC7512 /* OIDAuth.swift */,
 				6679188928D314E1002495CE /* SpeechToText */,
 				662004FF28C1C383006300AE /* SwiftGoogleTranslate.swift */,
 				662004FD28C18037006300AE /* Papago.swift */,
@@ -190,6 +200,16 @@
 				6679188728D2EF2A002495CE /* STTModel.swift */,
 			);
 			path = SpeechToText;
+			sourceTree = "<group>";
+		};
+		667918C728D7F0B1002495CE /* Mines */ = {
+			isa = PBXGroup;
+			children = (
+				667918CC28D83E11002495CE /* MockCollections.swift */,
+				667918C828D7F0DE002495CE /* MyMarkers.swift */,
+				667918CA28D7F6E4002495CE /* City.swift */,
+			);
+			path = Mines;
 			sourceTree = "<group>";
 		};
 		C766CD6BDDE288DEE64C913C /* Frameworks */ = {
@@ -450,11 +470,15 @@
 			files = (
 				667918A028D4323F002495CE /* AudioController.swift in Sources */,
 				662004D228C09ED6006300AE /* ViewController.swift in Sources */,
+				667918CB28D7F6E4002495CE /* City.swift in Sources */,
 				6679188828D2EF2A002495CE /* STTModel.swift in Sources */,
 				662004CE28C09ED6006300AE /* AppDelegate.swift in Sources */,
 				662004D028C09ED6006300AE /* SceneDelegate.swift in Sources */,
+				66CAD5CA28D9919300EC7512 /* OIDAuth.swift in Sources */,
 				6620050428C581E3006300AE /* AppAuth.swift in Sources */,
 				6679188628D2EF08002495CE /* STTViewModel.swift in Sources */,
+				667918C928D7F0DE002495CE /* MyMarkers.swift in Sources */,
+				667918CD28D83E11002495CE /* MockCollections.swift in Sources */,
 				6679188428D2DC2A002495CE /* SpeechManager.swift in Sources */,
 				662004FE28C18037006300AE /* Papago.swift in Sources */,
 				6620050028C1C383006300AE /* SwiftGoogleTranslate.swift in Sources */,

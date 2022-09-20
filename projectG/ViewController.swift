@@ -238,16 +238,17 @@ class ViewController: UIViewController {
         UserDefaults.standard.synchronize()
         print(engine)
         if engine == 0 { // naver
-            
+            sendAction()
         } else if engine == 1 { // google
             authori()
         }
     }
     
     @objc func sendAction() {
-        Papago.shared.translator(text: "korean") { text in
-            print(text)
-        }
+//        Papago.shared.translator(text: "korean") { text in
+//            print(text)
+//        }
+        view.addSubview(MyMarkers(frame: self.view.frame))
     }
     
     @objc func authori() {

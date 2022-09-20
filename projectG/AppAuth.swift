@@ -20,7 +20,6 @@ import AppAuth
 import UIKit
 import Alamofire
 import SwiftyJSON
-import GoogleSignIn
 
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
@@ -74,7 +73,7 @@ class AppAuthExampleViewController: UIViewController {
 
 extension AppAuthExampleViewController {
 
-    func validateOAuthConfiguration() {
+    func validateOAuthConfiguration() { // 예제와 다른지 체크
 
         // The example needs to be configured with your own client details.
         // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md
@@ -119,7 +118,7 @@ extension AppAuthExampleViewController {
 //MARK: IBActions
 extension AppAuthExampleViewController {
 
-    @IBAction func authWithAutoCodeExchange(_ sender: UIButton) {
+    @IBAction func authWithAutoCodeExchange(_ sender: UIButton) { // 인증 -> 토큰교환까지 한번에
 
         guard let issuer = URL(string: kIssuer) else {
             self.logMessage("Error creating URL for : \(kIssuer)")
@@ -158,7 +157,7 @@ extension AppAuthExampleViewController {
 
     }
 
-    @IBAction func authNoCodeExchange(_ sender: UIButton) {
+    @IBAction func authNoCodeExchange(_ sender: UIButton) { // 인증만 하고 토큰교환은 안함
 
         guard let issuer = URL(string: kIssuer) else {
             self.logMessage("Error creating URL for : \(kIssuer)")
@@ -201,7 +200,7 @@ extension AppAuthExampleViewController {
         }
     }
 
-    @IBAction func codeExchange(_ sender: UIButton) {
+    @IBAction func codeExchange(_ sender: UIButton) { // 인증완료 상태 -> 토큰교환하기
 
         guard let tokenExchangeRequest = self.authState?.lastAuthorizationResponse.tokenExchangeRequest() else {
             self.logMessage("Error creating authorization code exchange request")
@@ -221,7 +220,7 @@ extension AppAuthExampleViewController {
         }
     }
 
-    @IBAction func userinfo(_ sender: UIButton) {
+    @IBAction func userinfo(_ sender: UIButton) { // API 사용부분
 
         guard let userinfoEndpoint = self.authState?.lastAuthorizationResponse.request.configuration.discoveryDocument?.userinfoEndpoint else {
             self.logMessage("Userinfo endpoint not declared in discovery document")
@@ -309,7 +308,7 @@ extension AppAuthExampleViewController {
         }
     }
 
-    @IBAction func trashClicked(_ sender: UIBarButtonItem) {
+    @IBAction func trashClicked(_ sender: UIBarButtonItem) { // 인증상태 지우기
 
         let alert = UIAlertController(title: nil,
                                       message: nil,
@@ -373,7 +372,7 @@ extension AppAuthExampleViewController {
 //MARK: AppAuth Methods
 extension AppAuthExampleViewController {
 
-    func doClientRegistration(configuration: OIDServiceConfiguration, callback: @escaping PostRegistrationCallback) {
+    func doClientRegistration(configuration: OIDServiceConfiguration, callback: @escaping PostRegistrationCallback) { // 사용자 등록
 
         guard let redirectURI = URL(string: kRedirectURI) else {
             self.logMessage("Error creating URL for : \(kRedirectURI)")
@@ -404,7 +403,7 @@ extension AppAuthExampleViewController {
         }
     }
 
-    func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+    func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) { // 인증 -> 토큰교환 한번에
 
         guard let redirectURI = URL(string: kRedirectURI) else {
             self.logMessage("Error creating URL for : \(kRedirectURI)")
@@ -441,7 +440,7 @@ extension AppAuthExampleViewController {
         }
     }
 
-    func doAuthWithoutCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+    func doAuthWithoutCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) { // 인증만 하고 토큰 교환은 안함
 
         guard let redirectURI = URL(string: kRedirectURI) else {
             self.logMessage("Error creating URL for : \(kRedirectURI)")
