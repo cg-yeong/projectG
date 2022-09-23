@@ -499,7 +499,8 @@ extension AppAuthExampleViewController {
         var data: Data? = nil
 
         if let authState = self.authState {
-            data = NSKeyedArchiver.archivedData(withRootObject: authState)
+//            data = NSKeyedArchiver.archivedData(withRootObject: authState)
+            data = try? NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: false)
         }
         
         if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
@@ -512,10 +513,13 @@ extension AppAuthExampleViewController {
         guard let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data else {
             return
         }
-
-        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+        
+        if let authState = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [OIDAuthState.self], from: data) as? OIDAuthState {
             self.setAuthState(authState)
         }
+//        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+//            self.setAuthState(authState)
+//        }
     }
 
     func setAuthState(_ authState: OIDAuthState?) {
